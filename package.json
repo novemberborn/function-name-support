@@ -1,6 +1,6 @@
 {
   "name": "function-name-support",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Determine the level of support for function name inference.",
   "main": "index.js",
   "files": [
