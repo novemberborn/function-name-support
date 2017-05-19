@@ -6,26 +6,6 @@ import {support, bitFlags, isSubset, isSuperset} from '.'
 
 // See <http://node.green/#ES2015-built-in-extensions-function--name--property>.
 const expectations = {
-  default: {
-    support: {
-      functionStatements: true,
-      functionExpressions: true,
-      newFunction: true,
-      boundFunctions: true,
-      functionVariables: true,
-      functionObjectMethods: true,
-      accessorProperties: true,
-      shorthandMethods: true,
-      symbolKeyedMethods: true,
-      classStatements: true,
-      classExpressions: true,
-      classVariables: true,
-      classObjectMethods: true,
-      classPrototypeMethods: true,
-      classStaticMethods: true
-    },
-    bitFlags: 32767
-  },
   'v4.8.3': {
     support: {
       functionStatements: true,
@@ -66,11 +46,30 @@ const expectations = {
     },
     bitFlags: 26255
   }
+}[process.version] || {
+  support: {
+    functionStatements: true,
+    functionExpressions: true,
+    newFunction: true,
+    boundFunctions: true,
+    functionVariables: true,
+    functionObjectMethods: true,
+    accessorProperties: true,
+    shorthandMethods: true,
+    symbolKeyedMethods: true,
+    classStatements: true,
+    classExpressions: true,
+    classVariables: true,
+    classObjectMethods: true,
+    classPrototypeMethods: true,
+    classStaticMethods: true
+  },
+  bitFlags: 32767
 }
 
 test('detects the expected support', t => {
-  t.deepEqual(support, (expectations[process.version] || expectations.default).support)
-  t.is(bitFlags, (expectations[process.version] || expectations.default).bitFlags)
+  t.deepEqual(support, expectations.support)
+  t.is(bitFlags, expectations.bitFlags)
 })
 
 test('isSubset', t => {
@@ -96,7 +95,7 @@ test('false if error', t => {
 
 // Regression test for Istanbul itself
 {
-  const regression = (expectations[process.version] || expectations.default).support.classVariables
+  const regression = expectations.support.classVariables
     ? test.failing
     : test
   regression('istanbul instrumentation does not affect name detection', t => {
@@ -109,6 +108,6 @@ test('false if error', t => {
         }
       }
     })
-    t.deepEqual(actual, (expectations[process.version] || expectations.default).support)
+    t.deepEqual(actual, expectations.support)
   })
 }
