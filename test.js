@@ -72,6 +72,10 @@ test('detects the expected support', t => {
   t.is(bitFlags, expectations.bitFlags)
 })
 
+test('freezes the support object', t => {
+  t.true(Object.isFrozen(support))
+})
+
 test('isSubset', t => {
   t.true(isSubset(0b0111, 0b0010))
   t.false(isSubset(0b0111, 0b1001))
