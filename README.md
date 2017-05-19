@@ -38,20 +38,24 @@ A frozen object with boolean values. Compare with
 * *class prototype methods*: `classPrototypeMethods`
 * *class static methods*: `classStaticMethods`
 
+### `hasFullSupport`
+
+A boolean indicating whether all known function name inferences are supported.
+
 ### `bitFlags`
 
 An integer that stores a serialization of the `support` object. Useful when
 storing a function name (or lack thereof) for later comparisons along with
 details on whether the function name was inferable at all.
 
-### `isSubset(set: number, subset: number): boolean`
+### `isSubsetOf(otherFlags): boolean`
 
-Helper method for comparing `bitFlags`. Returns `true` if `subset` is a subset
-of `set`.
+Helper method for comparing `bitFlags`. Returns `true` if it is a subset of
+`otherFlags`.
 
-### `isSuperset(set: number, superset: number): boolean`
+### `isSupersetOf(otherFlags: number): boolean`
 
-Helper method for comparing `bitFlags`. Returns `true` if `superset` is a
-superset of `set`.
+Helper method for comparing `bitFlags`. Returns `true` if it is a superset of
+`otherFlags`.
 
 [node-compat-table]: http://node.green/#ES2015-built-in-extensions-function--name--property

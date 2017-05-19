@@ -2,7 +2,10 @@ import vm from 'vm'
 import test from 'ava'
 import {createInstrumenter} from 'istanbul-lib-instrument'
 import proxyquire from 'proxyquire'
-import {support, bitFlags, isSubset, isSuperset} from '.'
+import {support, bitFlags, hasFullSupport} from '.'
+
+const FULL_SET = 32767
+const LESSER_SET = 26255
 
 // See <http://node.green/#ES2015-built-in-extensions-function--name--property>.
 const expectations = {
@@ -24,7 +27,8 @@ const expectations = {
       classPrototypeMethods: true,
       classStaticMethods: true
     },
-    bitFlags: 26251
+    bitFlags: 26251,
+    hasFullSupport: false
   },
   'v6.4.0': {
     support: {
@@ -44,7 +48,8 @@ const expectations = {
       classPrototypeMethods: true,
       classStaticMethods: true
     },
-    bitFlags: 26255
+    bitFlags: 26255,
+    hasFullSupport: false
   }
 }[process.version] || {
   support: {
@@ -64,26 +69,53 @@ const expectations = {
     classPrototypeMethods: true,
     classStaticMethods: true
   },
-  bitFlags: 32767
+  bitFlags: FULL_SET,
+  hasFullSupport: true
 }
 
 test('detects the expected support', t => {
   t.deepEqual(support, expectations.support)
   t.is(bitFlags, expectations.bitFlags)
+  t.is(hasFullSupport, expectations.hasFullSupport)
 })
 
 test('freezes the support object', t => {
   t.true(Object.isFrozen(support))
 })
 
-test('isSubset', t => {
-  t.true(isSubset(0b0111, 0b0010))
-  t.false(isSubset(0b0111, 0b1001))
+test('isSubsetOf()', t => {
+  // Fake the support detection with one failure.
+  let first = true
+  const {isSubsetOf} = proxyquire('.', {
+    vm: {
+      runInContext (code, context) {
+        if (first) {
+          first = false
+          return vm.runInContext('false', context)
+        }
+
+        return vm.runInContext('true', context)
+      }
+    }
+  })
+
+  t.true(isSubsetOf(FULL_SET))
+  t.false(isSubsetOf(LESSER_SET))
 })
 
-test('isSuperset', t => {
-  t.true(isSuperset(0b0010, 0b0111))
-  t.false(isSuperset(0b1001, 0b0111))
+test('isSupersetOf()', t => {
+  // Fake-detect all.
+  const {isSupersetOf} = proxyquire('.', {
+    vm: {
+      runInContext (code, context) {
+        return vm.runInContext('true', context)
+      }
+    }
+  })
+
+  t.true(isSupersetOf(LESSER_SET))
+  const evenFullerSet = (FULL_SET << 1) + 1
+  t.false(isSupersetOf(evenFullerSet))
 })
 
 test('false if error', t => {

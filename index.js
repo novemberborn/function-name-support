@@ -117,6 +117,24 @@ support.classStaticMethods = test(`
 
 exports.support = Object.freeze(support)
 
+const hasFullSupport =
+  support.functionStatements &&
+  support.functionExpressions &&
+  support.newFunction &&
+  support.boundFunctions &&
+  support.functionVariables &&
+  support.functionObjectMethods &&
+  support.accessorProperties &&
+  support.shorthandMethods &&
+  support.symbolKeyedMethods &&
+  support.classStatements &&
+  support.classExpressions &&
+  support.classVariables &&
+  support.classObjectMethods &&
+  support.classPrototypeMethods &&
+  support.classStaticMethods
+exports.hasFullSupport = hasFullSupport
+
 const bitFlags = [
   'functionStatements',
   'functionExpressions',
@@ -141,5 +159,5 @@ const bitFlags = [
 }, 0b0)
 exports.bitFlags = bitFlags
 
-exports.isSubset = (set, subset) => (set & subset) === subset
-exports.isSuperset = (set, superset) => (set & superset) === set
+exports.isSubsetOf = otherFlags => (bitFlags & otherFlags) === bitFlags
+exports.isSupersetOf = otherFlags => (bitFlags & otherFlags) === otherFlags
