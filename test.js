@@ -130,20 +130,15 @@ test('false if error', t => {
 })
 
 // Regression test for Istanbul itself
-{
-  const regression = expectations.support.classVariables
-    ? test.failing
-    : test
-  regression('istanbul instrumentation does not affect name detection', t => {
-    const instrumenter = createInstrumenter()
+test('istanbul instrumentation does not affect name detection', t => {
+  const instrumenter = createInstrumenter()
 
-    const {support: actual} = proxyquire('./index', {
-      vm: {
-        runInContext (code, context) {
-          return vm.runInContext(instrumenter.instrumentSync(code, 'test.js'), context)
-        }
+  const {support: actual} = proxyquire('./index', {
+    vm: {
+      runInContext (code, context) {
+        return vm.runInContext(instrumenter.instrumentSync(code, 'test.js'), context)
       }
-    })
-    t.deepEqual(actual, expectations.support)
+    }
   })
-}
+  t.deepEqual(actual, expectations.support)
+})

@@ -26,7 +26,7 @@
     "@novemberborn/as-i-preach": "^9.0.0",
     "ava": "^0.19.1",
     "codecov": "^2.2.0",
-    "istanbul-lib-instrument": "^1.7.1",
+    "istanbul-lib-instrument": "^1.7.2",
     "nyc": "^10.3.2",
     "proxyquire": "^1.8.0"
   },
