@@ -23,11 +23,11 @@
   },
   "homepage": "https://github.com/novemberborn/function-name-inference#readme",
   "devDependencies": {
-    "@novemberborn/as-i-preach": "^9.0.0",
-    "ava": "^0.19.1",
+    "@novemberborn/as-i-preach": "^10.1.0",
+    "ava": "^0.21.0",
     "codecov": "^2.2.0",
-    "istanbul-lib-instrument": "^1.7.2",
-    "nyc": "^11.0.2",
+    "istanbul-lib-instrument": "^1.7.4",
+    "nyc": "^11.0.3",
     "proxyquire": "^1.8.0"
   },
   "nyc": {
